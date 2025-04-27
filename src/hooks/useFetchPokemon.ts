@@ -1,5 +1,7 @@
-import { Pokemon } from "../types/pokemon";
+import { Pokemon, PokemonPhoto } from "../types/pokemon";
 const BASE_URL = "https://pokeapi.co/api/v2";
+const PHOTO_URL =
+  "https://assets.pokemon.com/assets/cms2/img/pokedex/full/{id}.png"; // replace {id} with the pokemon id 0-> 001
 
 export async function fetchPokemonList(limit = 100): Promise<Pokemon[]> {
   try {
@@ -31,3 +33,20 @@ export async function fetchPokemonList(limit = 100): Promise<Pokemon[]> {
     throw error;
   }
 }
+
+export async function getPokemonPhoto(id: number): Promise<PokemonPhoto> {
+  const formattedId = String(id).padStart(3, "0"); // Format the ID to 3 digits
+  try {
+    const response = await fetch(`${PHOTO_URL}/pokemon/${formattedId}`);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching Pokemon data:", error);
+    throw error;
+  }
+}
+// add a function to fetch pokemon by name

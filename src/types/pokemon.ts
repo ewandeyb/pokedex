@@ -6,7 +6,9 @@ export interface Ability {
     url: string;
   };
 }
-
+export interface PokemonPhoto {
+  id: number;
+}
 export interface Pokemon {
   id: number;
   name: string;
