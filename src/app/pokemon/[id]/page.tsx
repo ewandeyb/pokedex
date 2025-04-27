@@ -11,8 +11,19 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { typeColors } from "@/types/typeColors";
+import { typeColors, typeWeaknesses } from "@/types/pokemonTypes";
 
+function getWeaknesses(types: { type: { name: string } }[]) {
+  const weaknesses = new Set<string>();
+
+  types.forEach((type) => {
+    const typeName = type.type.name;
+    const typeWeaknessList = typeWeaknesses[typeName] || [];
+    typeWeaknessList.forEach((weakness) => weaknesses.add(weakness));
+  });
+
+  return Array.from(weaknesses);
+}
 export default async function PokemonDetail({
   params,
 }: {
@@ -120,10 +131,26 @@ export default async function PokemonDetail({
                     </span>
                   </div>
                   <p className="text-xl mb-4 opacity-90">{genus}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="font-bold text-lg">Weaknesses:</p>
+                    {getWeaknesses(pokemon.types).map((weakness) => {
+                      const typeClass =
+                        typeColors[weakness] || "bg-gray-200 text-black"; // Default color
+                      return (
+                        <Badge
+                          key={weakness}
+                          variant="outline"
+                          className={`text-lg font-semibold ${typeClass}`}
+                        >
+                          {weakness.charAt(0).toUpperCase() + weakness.slice(1)}
+                        </Badge>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
-              <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-6">
+              <div className="flex flex-row lg:justify-start gap-2 mb-6">
                 {pokemon.types.map((type) => {
                   const typeName = type.type.name;
                   const typeClass =

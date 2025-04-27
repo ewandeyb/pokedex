@@ -4,7 +4,7 @@ import { Pokemon } from "@/types/pokemon";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { typeColors } from "@/types/typeColors";
+import { typeColors } from "@/types/pokemonTypes";
 import {
   Card,
   CardDescription,
