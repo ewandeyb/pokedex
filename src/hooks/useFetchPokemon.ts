@@ -41,7 +41,6 @@ export async function fetchPokemonPhoto(id: number) {
   try {
     const updatedId = id.toString().padStart(3, "0");
     const updated_url = PHOTO_URL.replace("{id}", updatedId);
-    console.log("Updated URL:", updated_url);
     const response = await fetch(`https://corsproxy.io/?url=${updated_url}`); //Added CORS proxy (unsafe)
 
     if (!response.ok) {
