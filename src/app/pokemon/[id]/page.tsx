@@ -3,7 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Info, Activity, Swords } from "lucide-react";
+import {
+  ArrowLeft,
+  Info,
+  Activity,
+  Swords,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { typeColors } from "@/types/typeColors";
 
 export default async function PokemonDetail({
@@ -38,7 +45,9 @@ export default async function PokemonDetail({
 
   // Get primary type for theming
   const primaryType = pokemon.types[0]?.type.name || "normal";
-
+  const currentId = Number.parseInt(params.id);
+  const prevId = currentId > 1 ? currentId - 1 : null;
+  const nextId = currentId < 1010 ? currentId + 1 : null;
   return (
     <main className="min-h-screen pb-16 bg-primary">
       {/* Hero Section with Pokemon Image and Basic Info */}
@@ -52,14 +61,36 @@ export default async function PokemonDetail({
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <Link
-            href="/"
-            className="inline-flex items-center text-white/90 hover:text-white mb-8 transition-colors"
-          >
-            <ArrowLeft className="mr-2 h-5 w-5" />
-            Back to Pokédex
-          </Link>
+          <div className="flex justify-between items-center mb-8">
+            <Link
+              href="/"
+              className="inline-flex items-center text-white/90 hover:text-white mb-8 transition-colors"
+            >
+              <ArrowLeft className="mr-2 h-5 w-5" />
+              Back to Pokédex
+            </Link>
+            <div className="flex items-center gap-4">
+              {prevId && (
+                <Link
+                  href={`/pokemon/${prevId}`}
+                  className="flex items-center text-gray-400 hover:text-white transition-colors"
+                >
+                  <ChevronLeft className="h-5 w-5 mr-1" />
+                  <span className="hidden sm:inline">Previous</span>
+                </Link>
+              )}
 
+              {nextId && (
+                <Link
+                  href={`/pokemon/${nextId}`}
+                  className="flex items-center text-gray-400 hover:text-white transition-colors"
+                >
+                  <span className="hidden sm:inline">Next</span>
+                  <ChevronRight className="h-5 w-5 ml-1" />
+                </Link>
+              )}
+            </div>
+          </div>
           <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-16">
             <div className="relative">
               <div className="absolute inset-0 bg-white/20 rounded-full blur-xl transform scale-90"></div>
