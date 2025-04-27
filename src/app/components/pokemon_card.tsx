@@ -54,10 +54,14 @@ export default function PokemonCard({ id }: { id: number }) {
   return (
     <Link href={`/pokemon/${id}`}>
       <div>
-        <Card>
+        <Card className="bg-white/2 text-white">
           <CardHeader>
             <CardTitle>
               {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+              <span className="text-sm text-gray-500">
+                {" "}
+                #{id.toString().padStart(3, "0")}
+              </span>
             </CardTitle>
             <CardDescription>
               <Image
