@@ -53,7 +53,7 @@ export default function PokemonCard({ id }: { id: number }) {
   return (
     <Link href={`/pokemon/${id}`}>
       <div className="flex justify-center">
-        <Card className="bg-white/2 text-white w-96 p-4">
+        <Card className="bg-white/2 text-white w-96 p-4 hover:bg-white/20">
           {" "}
           {/* Increased card width and added padding */}
           <CardHeader className="flex flex-col items-center">
