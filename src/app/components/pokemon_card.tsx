@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchPokemonById, fetchPokemonPhoto } from "@/hooks/useFetchPokemon";
 import { Pokemon } from "@/types/pokemon";
-
+import Image from "next/image";
 export default function PokemonCard({ id }: { id: number }) {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
@@ -41,9 +41,14 @@ export default function PokemonCard({ id }: { id: number }) {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-4">Pokemon Card</h1>
+      <h1 className="text-3xl font-bold mb-4">
+        Pokemon Card{" "}
+        <span className="text-gray-600">
+          # {id.toString().padStart(3, "0")}
+        </span>
+      </h1>
       <div className="flex items-center bg-white shadow-md rounded-lg p-4 mb-4 w-80">
-        <img
+        <Image
           src={photoUrl}
           alt={`Pokemon #${id}`}
           width={100}
