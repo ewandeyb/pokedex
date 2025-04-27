@@ -20,7 +20,7 @@ export default function PokemonList() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-primary">
       <h1 className="text-3xl font-bold mb-4 text-white">Pokemon List</h1>
-      <div className="grid grid-cols-5 text-lg gap-4 text-white">
+      <div className="grid grid-cols-5 text-lg gap-10  text-white">
         {pokemonList.map((pokemon) => (
           <div key={pokemon.id} className="mb-4">
             <PokemonCard id={pokemon.id} />

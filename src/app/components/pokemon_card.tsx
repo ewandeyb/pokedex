@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { typeColors } from "@/types/typeColors";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -53,31 +52,32 @@ export default function PokemonCard({ id }: { id: number }) {
 
   return (
     <Link href={`/pokemon/${id}`}>
-      <div>
-        <Card className="bg-white/2 text-white">
-          <CardHeader>
-            <CardTitle>
+      <div className="flex justify-center">
+        <Card className="bg-white/2 text-white w-96 p-4">
+          {" "}
+          {/* Increased card width and added padding */}
+          <CardHeader className="flex flex-col items-center">
+            <CardTitle className="text-center text-2xl font-bold">
+              {" "}
+              {/* Increased font size and made it bold */}
               {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-              <span className="text-sm text-gray-500">
+              <span className="text-lg text-gray-500">
                 {" "}
-                #{id.toString().padStart(3, "0")}
+                {/* Increased font size for the ID */} #
+                {id.toString().padStart(3, "0")}
               </span>
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="border border-gray-300 rounded-lg p-2 mt-2">
               <Image
                 src={photoUrl}
                 alt={`Pokemon #${id}`}
-                width={100}
-                height={100}
-                className="mr-4"
+                width={150}
+                height={150}
+                className="mx-auto"
               />
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <p>Height: {pokemon.height}</p>
-            <p>Weight: {pokemon.weight}</p>
-          </CardContent>
-          <CardFooter>
+          <CardFooter className="flex justify-center">
             {pokemon.types.map((type) => {
               const typeName = type.type.name;
               const typeClass =
@@ -86,7 +86,7 @@ export default function PokemonCard({ id }: { id: number }) {
                 <Badge
                   key={typeName}
                   variant="outline"
-                  className={`mr-2 ${typeClass}`}
+                  className={`text-xl font-semibold mr-2 ${typeClass}`}
                 >
                   {typeName.charAt(0).toUpperCase() + typeName.slice(1)}
                 </Badge>
