@@ -112,7 +112,7 @@ export default function PokemonList() {
     <div className="flex flex-col items-center justify-center min-h-screen p-6">
       <h1 className="text-5xl font-bold mb-8 text-white">Pokemon List</h1>
 
-      {/* Filters - Redesigned */}
+      {/* Filters */}
       <div className="w-full max-w-5xl bg-white/20 rounded-xl p-6 mb-8 backdrop-blur-sm">
         <div className="flex flex-col md:flex-row gap-4 items-stretch">
           {/* Search */}
