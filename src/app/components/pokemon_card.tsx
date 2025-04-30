@@ -60,7 +60,7 @@ export default function PokemonCard({ id }: { id: number }) {
             <CardTitle className="text-center text-2xl font-bold">
               {" "}
               {/* Increased font size and made it bold */}
-              {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+              {pokemon?.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
               <span className="text-lg text-gray-500">
                 {" "}
                 {/* Increased font size for the ID */} #
