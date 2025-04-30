@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PokemonList() {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
@@ -121,7 +122,7 @@ export default function PokemonList() {
             <Input
               type="text"
               placeholder="Search Pokemon or ID..."
-              className="w-full text-white text-lg h-14 pl-12 pr-4 rounded-lg border-2 border-gray-700 focus:border-white transition-colors"
+              className="w-full text-white text-lg h-14 pl-12 pr-4 rounded-lg border-2  focus:border-white transition-colors"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
@@ -209,7 +210,7 @@ export default function PokemonList() {
           {/* Order */}
           <div className="flex-1 min-w-[200px]">
             <Button
-              className="w-full bg-white/20 border-2 border-gray-600 hover:border-white hover:bg-gray-700 rounded-lg text-lg h-14 text-white flex items-center justify-between transition-colors"
+              className="w-full bg-white/20 border-2 border-gray-600 hover:border-white rounded-lg text-lg h-14 text-white flex items-center justify-between transition-colors"
               onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
             >
               <div className="flex items-center">
@@ -277,7 +278,7 @@ export default function PokemonList() {
             {isLoadingMore ? (
               <>
                 <Loader2 className="mr-2 h-6 w-6 animate-spin" />
-                Loading...
+                <Skeleton />
               </>
             ) : (
               "Load More"

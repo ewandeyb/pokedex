@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { Skeleton } from "@/components/ui/skeleton";
 export default function PokemonCard({ id }: { id: number }) {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -37,7 +37,7 @@ export default function PokemonCard({ id }: { id: number }) {
   }, [id]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Skeleton />;
   }
 
   if (error) {
