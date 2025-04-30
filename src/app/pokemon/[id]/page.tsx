@@ -56,7 +56,7 @@ export default async function PokemonDetail({
 
   // Get primary type for theming
   const primaryType = pokemon.types[0]?.type.name || "normal";
-  const currentId = Number.parseInt(params.id);
+  const currentId = Number.parseInt(id);
   const prevId = currentId > 1 ? currentId - 1 : null;
   const nextId = currentId < 1010 ? currentId + 1 : null;
   return (
