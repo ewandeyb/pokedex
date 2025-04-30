@@ -1,7 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchPokemonById, fetchPokemonPhoto } from "@/hooks/useFetchPokemon";
 import { Pokemon } from "@/types/pokemon";
 import Image from "next/image";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { typeColors } from "@/types/pokemonTypes";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
 export default function PokemonCard({ id }: { id: number }) {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
@@ -40,27 +51,50 @@ export default function PokemonCard({ id }: { id: number }) {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">
-        Pokemon Card{" "}
-        <span className="text-gray-600">
-          # {id.toString().padStart(3, "0")}
-        </span>
-      </h1>
-      <div className="flex items-center bg-white shadow-md rounded-lg p-4 mb-4 w-80">
-        <Image
-          src={photoUrl}
-          alt={`Pokemon #${id}`}
-          width={100}
-          height={100}
-          className="mr-4"
-        />
-        <div>
-          <h2 className="text-xl font-semibold">{pokemon.name}</h2>
-          <p>Height: {pokemon.height}</p>
-          <p>Weight: {pokemon.weight}</p>
-        </div>
+    <Link href={`/pokemon/${id}`}>
+      <div className="flex justify-center">
+        <Card className="bg-white/2 text-white w-96 p-4 hover:bg-white/20">
+          {" "}
+          {/* Increased card width and added padding */}
+          <CardHeader className="flex flex-col items-center">
+            <CardTitle className="text-center text-2xl font-bold">
+              {" "}
+              {/* Increased font size and made it bold */}
+              {pokemon?.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+              <span className="text-lg text-gray-500">
+                {" "}
+                {/* Increased font size for the ID */} #
+                {id.toString().padStart(3, "0")}
+              </span>
+            </CardTitle>
+            <CardDescription className="border border-gray-300 rounded-lg p-2 mt-2">
+              <Image
+                src={photoUrl}
+                alt={`Pokemon #${id}`}
+                width={150}
+                height={150}
+                className="mx-auto"
+              />
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="flex justify-center">
+            {pokemon.types.map((type) => {
+              const typeName = type.type.name;
+              const typeClass =
+                typeColors[typeName] || "bg-gray-200 text-black"; // Default color
+              return (
+                <Badge
+                  key={typeName}
+                  variant="outline"
+                  className={`text-xl font-semibold mr-2 ${typeClass}`}
+                >
+                  {typeName.charAt(0).toUpperCase() + typeName.slice(1)}
+                </Badge>
+              );
+            })}
+          </CardFooter>
+        </Card>
       </div>
-    </div>
+    </Link>
   );
 }
