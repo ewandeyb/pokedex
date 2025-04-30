@@ -22,6 +22,8 @@ export default function PokemonList() {
   const [offset, setOffset] = useState(0);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [query, setQuery] = useState<string>("");
+  const [sortOption, setSortOption] = useState<"name" | "id">("id");
+  const [order, setOrder] = useState<"asc" | "desc">("asc");
   const limit = 10;
 
   // Function to load Pokemon data
@@ -93,6 +95,17 @@ export default function PokemonList() {
       );
     }
 
+    // Sorting
+    filtered.sort((a, b) => {
+      let comparison = 0;
+      if (sortOption === "name") {
+        comparison = a.name.localeCompare(b.name);
+      } else {
+        comparison = a.id - b.id;
+      }
+      return order === "asc" ? comparison : -comparison;
+    });
+
     return filtered;
   };
 
@@ -150,6 +163,48 @@ export default function PokemonList() {
                 onClick={() => setSelectedType(null)}
               >
                 Clear Filter
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="border border-white rounded-md text-lg h-9 pl-10 pr-10 text-white">
+              Sort by: {sortOption === "name" ? "Name" : "ID"}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                className="text-lg"
+                onClick={() => setSortOption("name")}
+              >
+                Name
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-lg"
+                onClick={() => setSortOption("id")}
+              >
+                ID
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="border border-white rounded-md text-lg h-9 pl-10 pr-10 text-white">
+              Order : {order === "asc" ? "Ascending" : "Descending"}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                className="text-lg"
+                onClick={() => setOrder("asc")}
+              >
+                Ascending
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-lg"
+                onClick={() => setOrder("desc")}
+              >
+                Descending
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
