@@ -100,7 +100,7 @@ export default function PokemonList() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-primary p-6">
       <h1 className="text-3xl font-bold mb-8 text-white">Pokemon List</h1>
       {/* Filters */}
-      <div className="flex flex-row items-center gap-2 mb-4 te">
+      <div className="flex flex-row items-center gap-2 mb-4">
         <div>
           <Input
             type="text"
