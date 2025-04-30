@@ -57,7 +57,7 @@ export default function PokemonCard({ id }: { id: number }) {
           {" "}
           {/* Increased card width and added padding */}
           <CardHeader className="flex flex-col items-center">
-            <CardTitle className="text-center text-2xl font-bold">
+            <CardTitle className="text-center text-xl font-bold">
               {" "}
               {/* Increased font size and made it bold */}
               {pokemon?.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}

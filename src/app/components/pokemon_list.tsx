@@ -110,8 +110,8 @@ export default function PokemonList() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-primary p-6">
-      <h1 className="text-3xl font-bold mb-8 text-white">Pokemon List</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen p-6">
+      <h1 className="text-5xl font-bold mb-8 text-white">Pokemon List</h1>
       {/* Filters */}
       <div className="flex flex-row items-center gap-2 mb-4">
         <div>
