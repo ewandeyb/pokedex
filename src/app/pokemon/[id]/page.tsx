@@ -200,8 +200,11 @@ export default async function PokemonDetail({
       <div className="container mx-auto px-4 -mt-16 relative z-20 bg-white/20 rounded-2xl">
         <div className="rounded-2xl shadow-xl p-6 md:p-8 text-white">
           <Tabs defaultValue="stats" className="w-full">
-            <TabsList className="grid grid-cols-3 mb-8 w-full">
-              <TabsTrigger value="stats" className="flex items-center gap-2">
+            <TabsList className="grid grid-cols-3 mb-8 w-full bg-white/20">
+              <TabsTrigger
+                value="stats"
+                className="flex items-center gap-2 aria-selected:bg-white/20 "
+              >
                 <Activity className="h-4 w-4" />
                 <span className="hidden sm:inline">Stats</span>
               </TabsTrigger>
