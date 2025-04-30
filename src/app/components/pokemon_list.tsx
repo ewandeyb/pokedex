@@ -21,6 +21,7 @@ export default function PokemonList() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [offset, setOffset] = useState(0);
   const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [query, setQuery] = useState<string>("");
   const limit = 10;
 
   // Function to load Pokemon data
@@ -66,16 +67,35 @@ export default function PokemonList() {
   };
 
   // FILTER LOGIC
-  const filteredPokemonList = selectedType
-    ? pokemonList.filter((pokemon) => {
+  // FIXED FILTER LOGIC
+  const filteredPokemonList = () => {
+    let filtered = [...pokemonList];
+
+    // Apply type filter if selected
+    if (selectedType) {
+      filtered = filtered.filter((pokemon) => {
         return pokemon.types.some((type) => {
           const matches =
             type.type.name ===
             selectedType.charAt(0).toLowerCase() + selectedType.slice(1);
           return matches;
         });
-      })
-    : pokemonList;
+      });
+    }
+
+    // Apply search query filter (regardless of type selection)
+    if (query) {
+      const searchQuery = query.toLowerCase();
+      filtered = filtered.filter(
+        (pokemon) =>
+          pokemon.name.toLowerCase().includes(searchQuery) ||
+          pokemon.id.toString().includes(searchQuery)
+      );
+    }
+
+    return filtered;
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-primary p-6">
       <h1 className="text-3xl font-bold mb-8 text-white">Pokemon List</h1>
@@ -84,8 +104,10 @@ export default function PokemonList() {
         <div>
           <Input
             type="text"
-            placeholder="Search Pokemon..."
+            placeholder="Search Pokemon or ID..."
             className="w-full max-w-xs text-white"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
         </div>
         <div>
@@ -140,7 +162,7 @@ export default function PokemonList() {
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-white">
-            {filteredPokemonList.map((pokemon) => (
+            {filteredPokemonList().map((pokemon: Pokemon) => (
               <div key={pokemon.id} className="mb-4">
                 <PokemonCard id={pokemon.id} />
               </div>
