@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchPokemonById, fetchPokemonPhoto } from "@/hooks/useFetchPokemon";
+import { fetchPokemonById } from "@/hooks/useFetchPokemon";
 import { Pokemon } from "@/types/pokemon";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,10 +12,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { Skeleton } from "@/components/ui/skeleton";
 export default function PokemonCard({ id }: { id: number }) {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,9 +23,8 @@ export default function PokemonCard({ id }: { id: number }) {
       try {
         setLoading(true);
         const fetchedPokemon = await fetchPokemonById(id.toString());
-        const fetchedPhotoUrl = await fetchPokemonPhoto(id);
+
         setPokemon(fetchedPokemon);
-        setPhotoUrl(fetchedPhotoUrl);
       } catch (err) {
         setError("Failed to load Pokemon data.");
         console.error(err);
@@ -39,15 +37,11 @@ export default function PokemonCard({ id }: { id: number }) {
   }, [id]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Skeleton />;
   }
 
   if (error) {
     return <p>{error}</p>;
-  }
-
-  if (!pokemon || !photoUrl) {
-    return <p>No data available.</p>;
   }
 
   return (
@@ -57,10 +51,11 @@ export default function PokemonCard({ id }: { id: number }) {
           {" "}
           {/* Increased card width and added padding */}
           <CardHeader className="flex flex-col items-center">
-            <CardTitle className="text-center text-2xl font-bold">
+            <CardTitle className="text-center text-xl font-bold">
               {" "}
               {/* Increased font size and made it bold */}
-              {pokemon?.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+              {pokemon &&
+                pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
               <span className="text-lg text-gray-500">
                 {" "}
                 {/* Increased font size for the ID */} #
@@ -69,8 +64,14 @@ export default function PokemonCard({ id }: { id: number }) {
             </CardTitle>
             <CardDescription className="border border-gray-300 rounded-lg p-2 mt-2">
               <Image
-                src={photoUrl}
-                alt={`Pokemon #${id}`}
+                src={
+                  pokemon
+                    ? `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemon.id
+                        .toString()
+                        .padStart(3, "0")}.png`
+                    : ""
+                }
+                alt={`Pokemon #${pokemon?.name || "Unknown"}`}
                 width={150}
                 height={150}
                 className="mx-auto"
@@ -78,20 +79,21 @@ export default function PokemonCard({ id }: { id: number }) {
             </CardDescription>
           </CardHeader>
           <CardFooter className="flex justify-center">
-            {pokemon.types.map((type) => {
-              const typeName = type.type.name;
-              const typeClass =
-                typeColors[typeName] || "bg-gray-200 text-black"; // Default color
-              return (
-                <Badge
-                  key={typeName}
-                  variant="outline"
-                  className={`text-xl font-semibold mr-2 ${typeClass}`}
-                >
-                  {typeName.charAt(0).toUpperCase() + typeName.slice(1)}
-                </Badge>
-              );
-            })}
+            {pokemon &&
+              pokemon.types.map((type) => {
+                const typeName = type.type.name;
+                const typeClass =
+                  typeColors[typeName] || "bg-gray-200 text-black"; // Default color
+                return (
+                  <Badge
+                    key={typeName}
+                    variant="outline"
+                    className={`text-xl font-semibold mr-2 ${typeClass}`}
+                  >
+                    {typeName.charAt(0).toUpperCase() + typeName.slice(1)}
+                  </Badge>
+                );
+              })}
           </CardFooter>
         </Card>
       </div>

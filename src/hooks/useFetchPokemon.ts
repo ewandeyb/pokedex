@@ -1,8 +1,6 @@
 import type { Pokemon } from "../types/pokemon";
 
 const API_BASE_URL = "https://pokeapi.co/api/v2";
-const PHOTO_URL =
-  "https://assets.pokemon.com/assets/cms2/img/pokedex/full/{id}.png";
 export async function fetchPokemon(offset = 0, limit = 10): Promise<Pokemon[]> {
   try {
     // First, get the list of Pokemon with pagination
@@ -37,24 +35,7 @@ export async function fetchPokemon(offset = 0, limit = 10): Promise<Pokemon[]> {
     throw error;
   }
 }
-export async function fetchPokemonPhoto(id: number) {
-  try {
-    const updatedId = id.toString().padStart(3, "0");
-    const updated_url = PHOTO_URL.replace("{id}", updatedId);
-    const response = await fetch(`https://corsproxy.io/?url=${updated_url}`); //Added CORS proxy (unsafe)
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch Pokemon photo: ${response.status}`);
-    }
-
-    // Return image as a URL
-    const blob = await response.blob();
-    return URL.createObjectURL(blob);
-  } catch (error) {
-    console.error("Error fetching Pokemon photo:", error);
-    throw error;
-  }
-}
 export async function fetchPokemonById(id: string): Promise<Pokemon> {
   try {
     const response = await fetch(`${API_BASE_URL}/pokemon/${id}`);
