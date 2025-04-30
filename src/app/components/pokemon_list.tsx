@@ -5,12 +5,23 @@ import { Pokemon } from "@/types/pokemon";
 import PokemonCard from "./pokemon_card";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function PokemonList() {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [offset, setOffset] = useState(0);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [query, setQuery] = useState<string>("");
   const limit = 10;
 
   // Function to load Pokemon data
@@ -55,10 +66,95 @@ export default function PokemonList() {
     loadPokemon(newOffset, true);
   };
 
+  // FILTER LOGIC
+  // FIXED FILTER LOGIC
+  const filteredPokemonList = () => {
+    let filtered = [...pokemonList];
+
+    // Apply type filter if selected
+    if (selectedType) {
+      filtered = filtered.filter((pokemon) => {
+        return pokemon.types.some((type) => {
+          const matches =
+            type.type.name ===
+            selectedType.charAt(0).toLowerCase() + selectedType.slice(1);
+          return matches;
+        });
+      });
+    }
+
+    // Apply search query filter (regardless of type selection)
+    if (query) {
+      const searchQuery = query.toLowerCase();
+      filtered = filtered.filter(
+        (pokemon) =>
+          pokemon.name.toLowerCase().includes(searchQuery) ||
+          pokemon.id.toString().includes(searchQuery)
+      );
+    }
+
+    return filtered;
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-primary p-6">
       <h1 className="text-3xl font-bold mb-8 text-white">Pokemon List</h1>
-
+      {/* Filters */}
+      <div className="flex flex-row items-center gap-2 mb-4">
+        <div>
+          <Input
+            type="text"
+            placeholder="Search Pokemon or ID..."
+            className="w-full max-w-xs text-white"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="border border-white rounded-md text-lg h-9  pl-10 pr-10 text-white">
+              {selectedType ? selectedType : "Select Type"}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel className="text-lg">
+                Select Type
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {[
+                "Bug",
+                "Dark",
+                "Dragon",
+                "Electric",
+                "Fairy",
+                "Fighting",
+                "Fire",
+                "Ghost",
+                "Grass",
+                "Ice",
+                "Normal",
+                "Psychic",
+                "Rock",
+                "Steel",
+                "Water",
+              ].map((type) => (
+                <DropdownMenuItem
+                  key={type}
+                  className="text-lg"
+                  onClick={() => setSelectedType(type)}
+                >
+                  {type}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuItem
+                className="text-lg text-red-500"
+                onClick={() => setSelectedType(null)}
+              >
+                Clear Filter
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
@@ -66,7 +162,7 @@ export default function PokemonList() {
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-white">
-            {pokemonList.map((pokemon) => (
+            {filteredPokemonList().map((pokemon: Pokemon) => (
               <div key={pokemon.id} className="mb-4">
                 <PokemonCard id={pokemon.id} />
               </div>
